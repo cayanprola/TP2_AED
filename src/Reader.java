@@ -2,22 +2,20 @@ import java.io.*;
 import java.util.*;
 
 public class Reader {
-    public void readFile(ArrayList<HashMap<String, List<String>>> myList, String filename1, String filename2) {
-
+    /*public Grafo readFile(String filename1, String filename2) {
         //Read both files and parse them to the maps list
         try {
             File file1 = new File(filename1);
             File file2 = new File(filename2);
 
-            myList.add(this.parseFile(file1));
-            myList.add(this.parseFile(file2));
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
-    public HashMap<String, List<String>> parseFile(File filename) throws FileNotFoundException {
-        HashMap<String, List<String>> map = new HashMap<>();
+    public Grafo parseFile(File filename) throws FileNotFoundException {
+        Grafo mapa = new Grafo();
         boolean start = true;
         int headersAmount = 0;
         ArrayList<String> headers = new ArrayList<>();
@@ -25,27 +23,26 @@ public class Reader {
         Scanner myReader = new Scanner(filename);
         while (myReader.hasNextLine()) {
             String[] values = myReader.nextLine().split(",", headersAmount);
-            int cont = 0;
 
-            for (String value : values) {
-                if (start) {
-                    map.put(value, new ArrayList<>());
-                    headersAmount = map.keySet().size();
-                    headers.add(value);
-                } else {
-                    String key = headers.get(cont);
-                    List<String> map_values = map.get(key);
-                    map_values.add(value);
-                    map.put(key, map_values);
+            if (start) {
+                headersAmount = values.length;
+                for (int i = 1; i < values.length; i++) {
+                    headers.add(values[i]);
                 }
+                start = false;
+            } else {
+                String origem = values[0];
 
-                cont++;
+                for (int i = 1; i < values.length; i++) {
+                    String destino = headers.get(i - 1);
+                    int valor = Integer.parseInt(values[i]);
+
+                    mapa.add(origem, destino, valor);
+                }
             }
-
-            start = false;
         }
         myReader.close();
 
-        return map;
+        return mapa;
     }
 }
