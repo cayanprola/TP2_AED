@@ -9,6 +9,7 @@ public class Grafo {
     }
 
     public void add(String origem, String destino, int valor) {
+        //Adds the correlation between the origin and destination as valor
         if (mapa.get(origem) == null) {
             mapa.put(origem, new HashMap<>());
         }
@@ -17,6 +18,7 @@ public class Grafo {
     }
 
     public int get(String origem, String destino) {
+        //Return the weight based on the origin and the destination vertexes
         if (mapa.containsKey(origem) && mapa.get(origem).containsKey(destino)) {
             return mapa.get(origem).get(destino);
         }
@@ -27,14 +29,14 @@ public class Grafo {
     public void compare(ArrayList<String> ordem, int threshold) {
         int numGrupos = 1;
 
-        while(ordem.size() > 0) {
+        while (ordem.size() > 0) {
             String grupo = ordem.get(0);
 
             double peso = 0;
             int numeroAcima = 0;
 
             System.out.print(numGrupos + ": ");
-
+            //Iterate over the vertexes and print the values above the threshold
             int numPrint = 0;
             for (Map.Entry<String, Integer> entry : mapa.get(grupo).entrySet()) {
                 if (entry.getValue() >= threshold) {
@@ -52,13 +54,12 @@ public class Grafo {
                     ordem.remove(entry.getKey());
                 }
             }
-
+            //Calculate the percentage of the weights
             DecimalFormat f = new DecimalFormat("##.00");
             double percentage = Double.parseDouble(f.format((double) peso / numeroAcima));
 
             System.out.print(" (" + percentage + "%)");
             System.out.println();
-
             numGrupos += 1;
         }
     }

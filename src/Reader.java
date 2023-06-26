@@ -13,7 +13,7 @@ public class Reader {
             e.printStackTrace();
         }
     }*/
-
+    //Reads a file with data and save it to the graph
     public Grafo parseFile(File filename) throws FileNotFoundException {
         Grafo mapa = new Grafo();
         boolean start = true;
@@ -32,11 +32,9 @@ public class Reader {
                 start = false;
             } else {
                 String origem = values[0];
-
                 for (int i = 1; i < values.length; i++) {
                     String destino = headers.get(i - 1);
                     int valor = Integer.parseInt(values[i]);
-
                     mapa.add(origem, destino, valor);
                 }
             }
@@ -45,7 +43,7 @@ public class Reader {
 
         return mapa;
     }
-
+    //Reads the file in a specified order and save its values
     public ArrayList<String> parseTimeFile(File filename) throws FileNotFoundException {
         ArrayList<String> ordem = new ArrayList<>();
         boolean start = true;

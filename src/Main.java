@@ -3,9 +3,9 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        String header1 = args[0].split("=")[1];
-        String header2 = args[1].split("=")[1];
-        int threshold = Integer.parseInt(args[2].split("=")[1]);
+        String header1 = args[1].split("=")[1];
+        String header2 = args[2].split("=")[1];
+        int threshold = Integer.parseInt(args[3].split("=")[1]);
 
         Reader read = new Reader();
 
