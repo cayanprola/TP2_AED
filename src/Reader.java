@@ -45,4 +45,25 @@ public class Reader {
 
         return mapa;
     }
+
+    public ArrayList<String> parseTimeFile(File filename) throws FileNotFoundException {
+        ArrayList<String> ordem = new ArrayList<>();
+        boolean start = true;
+        int headersAmount = 0;
+        ArrayList<String> headers = new ArrayList<>();
+
+        Scanner myReader = new Scanner(filename);
+        while (myReader.hasNextLine()) {
+            String[] values = myReader.nextLine().split(",", headersAmount);
+
+            if (start) {
+                start = false;
+            } else {
+                ordem.add(values[0]);
+            }
+        }
+        myReader.close();
+
+        return ordem;
+    }
 }

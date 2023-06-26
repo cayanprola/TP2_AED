@@ -24,59 +24,42 @@ public class Grafo {
         return 0;
     }
 
-    public void compare(int threshold) {
-        HashMap<Double, ArrayList<String>> percentages = new HashMap<>();
+    public void compare(ArrayList<String> ordem, int threshold) {
+        int numGrupos = 1;
 
-        for (String key : mapa.keySet()) {
-            int numberAbove = 0;
-            int pesos = 0;
+        while(ordem.size() > 0) {
+            String grupo = ordem.get(0);
 
-            for (int valor : mapa.get(key).values()) {
-                if (valor >= threshold) {
-                    pesos += valor;
-                    numberAbove += 1;
+            double peso = 0;
+            int numeroAcima = 0;
+
+            System.out.print(numGrupos + ": ");
+
+            int numPrint = 0;
+            for (Map.Entry<String, Integer> entry : mapa.get(grupo).entrySet()) {
+                if (entry.getValue() >= threshold) {
+                    if (numPrint == 0) {
+                        System.out.print(entry.getKey());
+                    } else {
+                        System.out.print(", " + entry.getKey());
+                    }
+
+                    numPrint += 1;
+
+                    peso += entry.getValue();
+                    numeroAcima += 1;
+
+                    ordem.remove(entry.getKey());
                 }
             }
 
             DecimalFormat f = new DecimalFormat("##.00");
-            double percentage = Double.parseDouble(f.format((double) pesos / numberAbove));
-            percentages.putIfAbsent(percentage, new ArrayList<>());
-            percentages.get(percentage).add(key);
-        }
+            double percentage = Double.parseDouble(f.format((double) peso / numeroAcima));
 
-
-        TreeMap<Double, ArrayList<String>> sorted = new TreeMap<>(Collections.reverseOrder());
-        sorted.putAll(percentages);
-        List<Double> keys = new ArrayList<>(sorted.keySet());
-
-        int cont = 1;
-        percentages.clear();
-        for (Map.Entry<Double, ArrayList<String>> entry : sorted.entrySet()) {
-            for (String submissao : entry.getValue()) {
-                if (cont < 3) {
-                    percentages.putIfAbsent(entry.getKey(), new ArrayList<>());
-                    percentages.get(entry.getKey()).add(submissao);
-                } else {
-                    // .get(2) para pegar a 3 maior percentagem para fazer o ranking 3
-                    percentages.putIfAbsent(keys.get(2), new ArrayList<>());
-                    percentages.get(keys.get(2)).add(submissao);
-                }
-            }
-            cont += 1;
-        }
-
-        sorted.clear();
-        sorted.putAll(percentages);
-        cont = 1;
-
-        for (Map.Entry<Double, ArrayList<String>> entry : sorted.entrySet()) {
-            System.out.print(cont + ": ");
-            for (String submissao : entry.getValue()) {
-                System.out.print(submissao + " ");
-            }
-            System.out.print("(" + entry.getKey() + "%)");
+            System.out.print(" (" + percentage + "%)");
             System.out.println();
-            cont += 1;
+
+            numGrupos += 1;
         }
     }
 }
